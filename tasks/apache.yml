@@ -1,0 +1,16 @@
+- name: Install Zend Server on apache DEB
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  become: true
+  apt:
+    name: zend-server-php-{{ php_version }}
+    state: latest
+    update_cache: yes
+  notify: zend-server start
+
+- name: Install Zend Server on apache RPM
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  become: true
+  yum: 
+    name=zend-server-php-{{ php_version }}
+    state=latest     
+  notify: zend-server start  

@@ -1,0 +1,9 @@
+---
+
+- include: repository.yml
+  
+- include: apache.yml
+  when: web_server == "apache"
+
+- include: nginx.yml
+  when: web_server == "nginx"

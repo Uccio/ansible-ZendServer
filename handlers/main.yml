@@ -1,0 +1,12 @@
+---
+- name: zend-server start
+  service: name=zend-server state=started
+  become: true
+
+- name: zend-server stop
+  service: name=zend-server state=stopped
+  become: true
+
+- name: zend-server restart
+  service: name=zend-server state=restarted
+  become: true

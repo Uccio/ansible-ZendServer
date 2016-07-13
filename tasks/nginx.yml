@@ -1,0 +1,24 @@
+---
+- name: Ensure Nginx signing key is present on Ubuntu
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Ensure Zend repository is present on Ubuntu
+  apt_repository: repo='deb http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx' state=present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Ensure Zend repository is present on Ubuntu
+  apt_repository: repo='deb-src http://nginx.org/packages/mainline/ubuntu/ {{ ansible_distribution_release }} nginx' state=present
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+
+- name: Ensure Zend Server is installed (nginx)
+  become: true
+  apt:
+    name: "zend-server-nginx-php-{{ php_version }}"
+    state: latest
+    update_cache: yes
+  notify: zend-server start

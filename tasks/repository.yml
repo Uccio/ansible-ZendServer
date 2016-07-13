@@ -1,0 +1,33 @@
+- name: Ensure Zend signing key is present on Ubuntu
+  apt_key: url=http://repos.zend.com/zend.key state=present
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Ensure Zend repository is present on Ubuntu
+  apt_repository: repo='deb http://repos.zend.com/zend-server/{{ zendserver_version }}/deb_apache2.4 server non-free' state=present
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  
+- name: Ensure Zend repository is present on Centos/Red Hat
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  become: true
+  yum_repository:
+    name: zend-server
+    description: Official Zend repository - noarch
+    file: zend
+    baseurl: http://repos.zend.com/zend-server/{{ zendserver_version }}/rpm_apache2.4/$basearch
+    gpgcheck: yes
+    gpgkey: http://repos.zend.com/zend.key
+    
+    
+- name: Ensure Zend - noarch repository is present on Centos/Red Hat
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  become: true
+  yum_repository:
+    name: zend-server-noarch
+    description: Official Zend repository - noarch
+    file: zend
+    baseurl: http://repos.zend.com/zend-server/{{ zendserver_version }}/rpm_apache2.4/noarch
+    enabled: yes
+    gpgkey: http://repos.zend.com/zend.key
+    
